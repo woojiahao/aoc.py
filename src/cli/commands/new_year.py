@@ -8,8 +8,10 @@ import click
 @click.argument("year")
 @click.argument("days")
 def new_year(year, days):
+    year = int(year)
+    days = int(days)
     data_folder_name = f"data/y{year}"
-    os.makedirs(data_folder_name)
+    os.makedirs(data_folder_name, exist_ok=True)
     os.chdir(data_folder_name)
     for i in range(1, days + 1):
         with open(f"day{i}.txt", "w") as _:
@@ -20,7 +22,7 @@ def new_year(year, days):
     os.chdir("../..")
 
     solution_folder_name = f"src/aoc/y{year}"
-    os.makedirs(solution_folder_name)
+    os.makedirs(solution_folder_name, exist_ok=True)
     os.chdir(solution_folder_name)
 
     for i in range(1, days + 1):
@@ -34,7 +36,7 @@ from ..solution import Solution
 
 class Y{year}Day{i}(Solution):
     def parse_data(self, contents: str) -> Any:
-        for line in contents.strip().split("\n"):
+        for line in contents.strip().split(\"\\n\"):
             pass
         return
 

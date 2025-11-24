@@ -7,11 +7,7 @@ name = "aoc.py"
 version = "0.1.0"
 
 [tool.hatch.build.targets.wheel]
-packages = [
-  "src/aoc",
-  "src/cli"
-]
+packages = ["src/aoc", "src/cli"]
 
 [project.scripts]
 cli = "cli.main:main"
-
