@@ -2,6 +2,8 @@ import abc
 from dataclasses import dataclass
 from typing import Any, Literal, Union
 
+import click
+
 TYPE = Union[Literal["live", "test"]]
 
 
@@ -37,3 +39,6 @@ class Solution(abc.ABC):
         data = self.load_data(type)
         parsed_data = self.parse_data(data)
         return self.solve_two(parsed_data)
+
+    def is_test_mode(self) -> bool:
+        return click.get_current_context().obj["test"]

@@ -17,7 +17,13 @@ from aoc.solution import Solution
     is_flag=True,
     help="run solution against test data instead of live data",
 )
-def day(year: int, day: int, part: Optional[str], test: bool):
+@click.pass_context
+def day(ctx: click.Context, year: int, day: int, part: Optional[str], test: bool):
+    if ctx.obj is None:
+        ctx.obj = {}
+
+    ctx.obj["test"] = test
+
     module_name = f"aoc.y{year}.day{day}"
     solution_class_name = f"Y{year}Day{day}"
 
