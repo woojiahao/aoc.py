@@ -38,5 +38,4 @@ class Y2025Day2(Solution):
     def __is_repeated__(self, sn: str, chunk_size: int) -> bool:
         if len(sn) % chunk_size != 0:
             return False
-        chunks = [sn[i : i + chunk_size] for i in range(0, len(sn), chunk_size)]
-        return all([chunk == chunks[0] for chunk in chunks])
+        return sn[:chunk_size] * (len(sn) // chunk_size) == sn
