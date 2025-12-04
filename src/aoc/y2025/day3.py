@@ -1,4 +1,5 @@
 from typing import Any, Dict, List, Tuple
+from datetime import datetime
 
 from ..solution import Solution
 
@@ -18,8 +19,11 @@ class Y2025Day3(Solution):
 
     def __solve__(self, data: List[List[int]], max_taken: int) -> int:
         ans = 0
+        start = datetime.now().timestamp()
         for bank_ in data:
             ans += self.__take_batteries__(bank_, max_taken)
+        end = datetime.now().timestamp()
+        print((end - start) * 1000)
         return ans
 
     def __take_batteries__(self, bank: List[int], max_taken: int) -> int:
