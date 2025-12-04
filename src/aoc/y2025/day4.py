@@ -1,6 +1,7 @@
-from typing import Any, List, Tuple
+from typing import Any, Dict, List, Set, Tuple
 
 from ..solution import Solution
+from ..utils.spatial import RCCoord
 
 DIRS = [(-1, 0), (1, 0), (0, -1), (0, 1), (-1, -1), (-1, 1), (1, -1), (1, 1)]
 
@@ -18,15 +19,8 @@ class Y2025Day4(Solution):
         return accessible
 
     def solve_two(self, data: Any) -> Any:
-        accessible_removed = 0
-        self.__toposort__(data)
-        while True:
-            cur_accessible, new_grid = self.__remove_accessible__(data)
-            if cur_accessible == 0:
-                break
-            accessible_removed += cur_accessible
-            data = new_grid
-        return accessible_removed
+        total_removed = self.__toposort__(data)
+        return total_removed
 
     def __remove_accessible__(
         self, grid: List[List[str]]
@@ -51,39 +45,39 @@ class Y2025Day4(Solution):
 
     def __toposort__(self, data: List[List[str]]) -> int:
         m, n = len(data), len(data[0])
-        graph = {}
-        for r in range(m):
-            for c in range(n):
-                graph[(r, c)] = {"in": 0, "out": set()}
+        graph: Dict[RCCoord, Set[RCCoord]] = {}
 
         for r in range(m):
             for c in range(n):
                 if data[r][c] == "@":
+                    if (r, c) not in graph:
+                        graph[(r, c)] = set()
                     for dr, dc in DIRS:
                         nr, nc = r + dr, c + dc
                         in_grid = 0 <= nr < m and 0 <= nc < n
                         if not in_grid:
                             continue
-                        graph[(nr, nc)]["in"] += 1
-                        graph[(r, c)]["in"] += 1
-                        graph[(nr, nc)]["out"].add((r, c))
-                        graph[(r, c)]["out"].add((nr, nc))
+                        if data[nr][nc] == "@":
+                            if (nr, nc) not in graph:
+                                graph[(nr, nc)] = set()
+                            graph[(nr, nc)].add((r, c))
+                            graph[(r, c)].add((nr, nc))
 
         frontier = []
         for r in range(m):
             for c in range(n):
-                if graph[(r, c)]["in"] < 4:
+                if data[r][c] == "@" and len(graph[(r, c)]) < 4:
                     frontier.append((r, c))
 
-        removed = 0
+        visited = set(frontier)
         while frontier:
             new_frontier = []
             for r, c in frontier:
-                for nr, nc in graph[(r, c)]["out"]:
-                    graph[(nr, nc)]["out"].discard((r, c))
-                    if len(graph[(nr, nc)]["out"]) < 4:
+                for nr, nc in graph[(r, c)]:
+                    graph[(nr, nc)].discard((r, c))
+                    if len(graph[(nr, nc)]) < 4 and (nr, nc) not in visited:
                         new_frontier.append((nr, nc))
-            removed += len(frontier)
+                        visited.add((nr, nc))
             frontier = new_frontier
 
-        return removed
+        return len(visited)
