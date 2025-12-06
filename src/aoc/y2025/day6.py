@@ -33,12 +33,11 @@ class Y2025Day6(Solution):
         cols = []
         for row in numbers:
             cells = []
-            padded_row = row.replace(" ", "0")
             for i, start in enumerate(col_starts):
                 if i + 1 < len(col_starts):
-                    cells.append(padded_row[start : col_starts[i + 1] - 1])
+                    cells.append(row[start : col_starts[i + 1] - 1])
                 else:
-                    cells.append(padded_row[start:])
+                    cells.append(row[start:])
             cols.append(cells)
         transposed_cols = list(zip(*cols))
 
@@ -48,7 +47,7 @@ class Y2025Day6(Solution):
             transposed_l_col = list(zip(*l_col))
             nums = []
             for raw_num in transposed_l_col:
-                num_s = "".join(raw_num).strip("0")
+                num_s = "".join(raw_num).strip(" ")
                 nums.append(int(num_s))
             col_numbers.append(nums)
 
