@@ -22,36 +22,19 @@ class Y2025Day6(Solution):
 
     def solve_two(self, data: str) -> Any:
         lines = data.strip().split("\n")
-        numbers = lines[:-1]
-        operations = lines[-1]
-        col_starts = []
-        for i, ch in enumerate(operations):
-            if ch == " ":
-                continue
-            col_starts.append(i)
-
-        cols = []
-        for row in numbers:
-            cells = []
-            for i, start in enumerate(col_starts):
-                if i + 1 < len(col_starts):
-                    cells.append(row[start : col_starts[i + 1] - 1])
-                else:
-                    cells.append(row[start:])
-            cols.append(cells)
-        transposed_cols = list(zip(*cols))
-
-        col_numbers = []
-        for col in transposed_cols:
-            l_col = list(col)
-            transposed_l_col = list(zip(*l_col))
-            nums = []
-            for raw_num in transposed_l_col:
-                num_s = "".join(raw_num).strip(" ")
-                nums.append(int(num_s))
-            col_numbers.append(nums)
-
-        return self.__perform_operations__(col_numbers, operations.split())
+        nums = lines[:-1]
+        col_starts = [i for i, ch in enumerate(lines[-1]) if ch != " "]
+        rows, ans = len(nums), 0
+        for s, e in zip(col_starts, col_starts[1:] + [len(nums[0]) + 1]):
+            ans += eval(
+                lines[-1][s].join(
+                    [
+                        "".join([nums[r][c] for r in range(rows) if nums[r][c] != " "])
+                        for c in range(s, e - 1)
+                    ]
+                )
+            )
+        return ans
 
     def __perform_operations__(
         self, col_numbers: List[List[int]], operations: List[str]
