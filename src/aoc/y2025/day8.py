@@ -1,7 +1,7 @@
-from collections import defaultdict
-from typing import Any, DefaultDict, List, Tuple
+from typing import Any, List, Tuple
 
 from ..solution import Solution
+from ..utils.math import euclidean_distance
 from ..utils.spatial import XYZCoord
 from ..utils.ufds import UFDS
 
@@ -42,9 +42,6 @@ class Y2025Day8(Solution):
         all_pairs = []
         for i in range(n):
             for j in range(i + 1, n):
-                all_pairs.append((i, j, self.__euclidean_distance__(data[i], data[j])))
+                all_pairs.append((i, j, euclidean_distance(data[i], data[j])))
         all_pairs.sort(key=lambda x: x[2])
         return all_pairs
-
-    def __euclidean_distance__(self, a: XYZCoord, b: XYZCoord) -> float:
-        return ((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2 + (a[2] - b[2]) ** 2) ** 0.5
