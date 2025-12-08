@@ -17,38 +17,23 @@ class Y2025Day8(Solution):
     def solve_one(self, data: List[XYZCoord]) -> Any:
         pick = 10 if self.is_test_mode() else 1000
 
-        n = len(data)
-        ufds = UFDS(n)
-        all_pairs = self.__get_ordered_pairs__(data)
-
-        for pair in all_pairs[:pick]:
+        ufds = UFDS(len(data))
+        for pair in self.__get_ordered_pairs__(data)[:pick]:
             ufds.union(pair[0], pair[1])
 
-        parent_sizes: DefaultDict[int, int] = defaultdict(int)
-        for i in range(n):
-            root_i = ufds.find(i)
-            parent_sizes[root_i] += 1
-
         ans = 1
-        for v in sorted(parent_sizes.values(), reverse=True)[:3]:
+        for v in sorted(ufds.union_sizes.values(), reverse=True)[:3]:
             ans *= v
         return ans
 
     def solve_two(self, data: List[XYZCoord]) -> Any:
-        n = len(data)
-        ufds = UFDS(n)
+        ufds = UFDS(len(data))
 
-        all_pairs = self.__get_ordered_pairs__(data)
-
-        i = 0
-        while i < len(all_pairs):
-            pair = all_pairs[i]
+        for pair in self.__get_ordered_pairs__(data):
             ufds.union(pair[0], pair[1])
             if ufds.unions == 1:
-                break
-            i += 1
-
-        return data[all_pairs[i][0]][0] * data[all_pairs[i][1]][0]
+                return data[pair[0]][0] * data[pair[1]][0]
+        return -1
 
     def __get_ordered_pairs__(
         self, data: List[XYZCoord]

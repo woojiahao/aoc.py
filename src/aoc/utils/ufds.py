@@ -1,3 +1,6 @@
+from typing import Dict
+
+
 class UFDS:
     def __init__(self, n: int) -> None:
         self.n = n
@@ -22,3 +25,11 @@ class UFDS:
         else:
             self.ranks[root_p] += self.ranks[root_q]
             self.parents[root_q] = root_p
+
+    @property
+    def union_sizes(self) -> Dict[int, int]:
+        sizes: Dict[int, int] = {}
+        for p in range(self.n):
+            root_p = self.find(p)
+            sizes[root_p] = sizes.get(root_p, 0) + 1
+        return sizes
