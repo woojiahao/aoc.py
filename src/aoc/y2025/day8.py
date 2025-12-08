@@ -1,34 +1,9 @@
+from collections import defaultdict
 from typing import Any, DefaultDict, List, Tuple
 
-from aoc.utils.spatial import XYZCoord
-from collections import defaultdict
-
 from ..solution import Solution
-
-
-class UFDS:
-    def __init__(self, n: int) -> None:
-        self.parents = list(range(n))
-        self.ranks = [1] * n
-        self.unions = n
-
-    def find(self, u):
-        if u == self.parents[u]:
-            return u
-        self.parents[u] = self.find(self.parents[u])
-        return self.parents[u]
-
-    def union(self, u, v):
-        root_u, root_v = self.find(u), self.find(v)
-        if root_u != root_v:
-            self.unions -= 1
-
-        if self.ranks[root_u] < self.ranks[root_v]:
-            self.ranks[root_v] += 1
-            self.parents[root_u] = root_v
-        else:
-            self.ranks[root_u] += 1
-            self.parents[root_v] = root_u
+from ..utils.spatial import XYZCoord
+from ..utils.ufds import UFDS
 
 
 class Y2025Day8(Solution):
