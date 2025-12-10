@@ -2,3 +2,10 @@ mypy
 
 click
 build
+
+shapely
+numpy
+sympy
+z3-solver
+scipy
+scipy-stubs
