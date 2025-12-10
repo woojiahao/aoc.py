@@ -1,5 +1,6 @@
 import importlib
 from typing import Literal, Optional, Union
+from datetime import datetime
 
 import click
 from aoc.solution import Solution
@@ -34,7 +35,13 @@ def day(ctx: click.Context, year: int, day: int, part: Optional[str], test: bool
     solve_type: Union[Literal["live"], Literal["test"]] = "test" if test else "live"
     print(f"===== Advent of Code {year} Day {day} =====")
     if part is None or part == "1":
-        print(f"Part one: {solution.part_one(solve_type)}")
+        start = datetime.now().timestamp()
+        part_one = solution.part_one(solve_type)
+        end = datetime.now().timestamp()
+        print(f"Part one: {part_one} (took {(end - start) * 1000}ms)")
     if part is None or part == "2":
-        print(f"Part two: {solution.part_two(solve_type)}")
+        start = datetime.now().timestamp()
+        part_two = solution.part_two(solve_type)
+        end = datetime.now().timestamp()
+        print(f"Part two: {part_two} (took {(end - start) * 1000}ms)")
     print(f"===== Advent of Code {year} Day {day} =====")
