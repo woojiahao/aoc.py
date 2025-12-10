@@ -1,5 +1,5 @@
-from typing import Any, List, Self, Tuple, Type
 from collections import deque
+from typing import Any, List, Self, Tuple, Type
 
 from scipy.optimize import linprog
 
@@ -68,7 +68,7 @@ class Machine:
         )
 
         if res.success:
-            return int(sum(res.x))
+            return int(sum(res.x))  # type: ignore
         return 0
 
     @classmethod
