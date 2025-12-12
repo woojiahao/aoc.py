@@ -13,6 +13,7 @@ class Y2025Day11(Solution):
         return graph
 
     def solve_one(self, data: Dict[str, List[str]]) -> Any:
+        @cache
         def paths(node: str) -> int:
             if node == "out":
                 return 1
